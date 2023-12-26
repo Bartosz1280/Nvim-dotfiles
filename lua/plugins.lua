@@ -35,11 +35,11 @@ local opts = { noremap = true, silent = true }
 require('lazy').setup {
 
     --- colorscheme ---
-    {'challenger-deep-theme/vim',
+    {'betoissues/contrastneed-theme',
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
-        vim.cmd([[colorscheme challenger_deep]])
+        vim.cmd([[colorscheme contrastneed]])
         end,
     },
 
@@ -71,7 +71,7 @@ require('lazy').setup {
             sections = {
                 lualine_a = {'mode'},
                 lualine_b ={'location'},
-                lualine_c = {"' | '",'filename','filetype',"'󰍉 | '",'diagnostics',"' | '",'branch',"' | '",'diff'},
+                lualine_c = {"' | '",'filename','filetype',"'󰍉 | '",'diagnostics',"' | '",'branch',"'󰕛 | '",'diff'},
                 lualine_x = {},
                 lualine_y = {},
                 lualine_z = {"os.date('%y-%m-%d %H:%M:%S')"}
@@ -107,22 +107,7 @@ require('lazy').setup {
     }
   end
 },
-
-    --- Startup-nvim
-    --
-    -- startup screen
-     --{"startup-nvim/startup.nvim",
-         --dependencies = {
-             --"nvim-telescope/telescope.nvim",
-             --"nvim-lua/plenary.nvim"
-         --},
-         ----config = function()
-                 ----require("startup").setup({theme = "commandcenter"})
-                 ----end
-     --},
-    --- Indent-blankline.nvim ---
-    --
-    -- Colored intendention lines
+   --- Indent-blankline.nvim ---
     { "lukas-reineke/indent-blankline.nvim",
         main = "ibl", opts = {},
         init = function()
@@ -208,68 +193,16 @@ require('lazy').setup {
 	-- install jsregexp (optional!).
 	build = "make install_jsregexp"
   },
-
-  --- NotebookNavigator.nvim 
-  --
-  -- jupyter-notebook integration in nvim
-    {"GCBallesteros/NotebookNavigator.nvim",
-    lazy = true,
-   -- event = "BufEnter *.ipynb",
-    keys = {
-        { "]h", function() require("notebook-navigator").move_cell "d" end },
-        { "[h", function() require("notebook-navigator").move_cell "u" end },
-        { "<leader>q", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
-        { "<leader>qq", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
-    },
-    dependencies = {
-        "echasnovski/mini.comment",
-        "hkupty/iron.nvim", -- repl provider
-        -- or "akinsho/toggleterm.nvim" -- repl provider
-        "anuvyklack/hydra.nvim",
-    },
-    event = "VeryLazy",
-    config = function()
-        local nn = require "notebook-navigator"
-        nn.setup({ activate_hydra_keys = "<leader>h" })
-    end,
-    },
-
---- noice.nvim
---
--- Message pop ups
-     --{"folke/noice.nvim",
-     --event = "VeryLazy",
-     --opts = {
-         ---- add any options here
-     --},
-     --dependencies = {
-         ---- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-         --"MunifTanjim/nui.nvim",
-         ---- OPTIONAL:
-         ----   `nvim-notify` is only needed, if you want to use the notification view.
-         ----   If not available, we use `mini` as the fallback
-         --"rcarriga/nvim-notify",
-         --}
-     --},
- --
-    {
-  "echasnovski/mini.indentscope",
-  version = false, -- wait till new 0.7.0 release to put it back on semver
-  opts = {
-    -- symbol = "▏",
-    symbol = "│",
-    options = { try_as_border = true },
-  },
-  --init = require('mini.indentscope').setup()
-},
 {
-  "max397574/colortils.nvim",
-  cmd = "Colortils",
-  config = function()
-    require("colortils").setup()
-  end,
+    "echasnovski/mini.indentscope",
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    opts = {
+        -- symbol = "▏",
+        symbol = "│",
+        options = { try_as_border = true },
 },
--- Julia Specific packages
+},
+    -- SECTION: Julia Specific plugins
 {
     -- General Julai support
     'JuliaEditorSupport/julia-vim',
@@ -277,10 +210,11 @@ require('lazy').setup {
     event = "BufEnter *.jl"
 
   },
-  { -- magma.nvim - code cell like execution
+  -- SECTION : DataScience IDE specific plugins
+  {
+      -- magma.nvim - code cell like execution
+      --  @ https://github.com/dccsillag/magma-nvim
       'dccsillag/magma-nvim',
-      lazy=true,
-      event = "BufEnter *.py, *.jl",
       config = function()
           vim.cmd(":UpdateRemotePlugins")
           vim.g.magma_automatically_open_output = false
@@ -293,6 +227,12 @@ require('lazy').setup {
         { "<LocalLeader>rc", "<cmd>MagmaReevaluateCell<CR>" },
         { "<LocalLeader>rd", "<cmd>MagmaDelete<CR>" },
         { "<LocalLeader>ro", "<cmd>MagmaShowOutput<CR>" },
-}  }
-
+    } 
+},
+{
+    -- nvim-notify - nice notifications pop-ups
+    -- @ https://github.com/rcarriga/nvim-notify
+    --
+    'rcarriga/nvim-notify'
+}
 }
